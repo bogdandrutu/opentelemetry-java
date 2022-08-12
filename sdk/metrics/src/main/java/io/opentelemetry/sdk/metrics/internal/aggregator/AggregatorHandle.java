@@ -37,7 +37,7 @@ public abstract class AggregatorHandle<T, U extends ExemplarData> implements Bou
   // mapped/unmapped into a registry map.
   private final AtomicLong refCountMapped;
   // Note: This is not 100% thread-safe. There is a race condition where recordings can
-  // be made in the moment between the reset and the setting of this field's value. In those
+  // be made in the interval between reset and setting of this field's value. In those
   // cases, it is possible that a recording could be missed in a given recording interval, but
   // it should be picked up in the next, assuming that more recordings are being made.
   private volatile boolean hasRecordings = false;
@@ -98,6 +98,7 @@ public abstract class AggregatorHandle<T, U extends ExemplarData> implements Bou
   }
 
   /** Implementation of the {@code accumulateThenReset}. */
+  @Nullable
   protected abstract T doAccumulateThenReset(List<U> exemplars);
 
   @Override

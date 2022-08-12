@@ -90,8 +90,13 @@ public final class LongLastValueAggregator
     }
 
     @Override
+    @Nullable
     protected LongAccumulation doAccumulateThenReset(List<LongExemplarData> exemplars) {
-      return LongAccumulation.create(this.current.getAndSet(DEFAULT_VALUE), exemplars);
+      Long current = this.current.getAndSet(DEFAULT_VALUE);
+      if (current == null) {
+        return null;
+      }
+      return LongAccumulation.create(current, exemplars);
     }
 
     @Override
